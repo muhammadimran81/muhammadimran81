@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BoyZWear - Boys Only Kids Clothing</title>
+    <meta name="description" content="Trendy, comfortable boys-only kids clothing. Shop tees, hoodies, jeans, and more." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="/">BoyZWear</a>
+        <nav class="nav">
+          <a href="/">Home</a>
+          <a href="./catalog.html">Shop</a>
+          <a href="#new">New Arrivals</a>
+          <a href="#sale">Sale</a>
+        </nav>
+        <div class="actions">
+          <input id="site-search" type="search" placeholder="Search boys tees, jeans..." />
+          <button id="cart-button" aria-label="Open cart">
+            <span class="icon">🛒</span>
+            <span id="cart-count" class="badge">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <h1>Fresh fits for boys</h1>
+            <p>Comfortable, durable, and stylish clothes for boys ages 2–12.</p>
+            <div class="hero-cta">
+              <a class="btn btn-primary" href="./catalog.html">Shop Now</a>
+              <a class="btn btn-secondary" href="#new">See New Arrivals</a>
+            </div>
+          </div>
+          <div class="hero-art" role="img" aria-label="Boys fashion banner"></div>
+        </div>
+      </section>
+
+      <section id="featured" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>Featured Picks</h2>
+            <a href="./catalog.html" class="link">View all</a>
+          </div>
+          <div id="featured-grid" class="product-grid"></div>
+        </div>
+      </section>
+
+      <section id="new" class="section alt">
+        <div class="container">
+          <div class="section-head">
+            <h2>New Arrivals</h2>
+          </div>
+          <div id="new-grid" class="product-grid"></div>
+        </div>
+      </section>
+
+      <section id="sale" class="section">
+        <div class="container">
+          <div class="section-head">
+            <h2>On Sale</h2>
+          </div>
+          <div id="sale-grid" class="product-grid"></div>
+        </div>
+      </section>
+    </main>
+
+    <aside id="cart" class="cart" aria-hidden="true" aria-labelledby="cart-title" role="dialog">
+      <div class="cart-backdrop" data-close></div>
+      <div class="cart-panel">
+        <header class="cart-header">
+          <h3 id="cart-title">Your Cart</h3>
+          <button class="icon-btn" data-close aria-label="Close cart">✕</button>
+        </header>
+        <div id="cart-items" class="cart-items"></div>
+        <footer class="cart-footer">
+          <div class="row">
+            <span>Subtotal</span>
+            <strong id="cart-subtotal">$0.00</strong>
+          </div>
+          <a class="btn btn-primary w-full" href="./checkout.html">Checkout</a>
+        </footer>
+      </div>
+    </aside>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <div class="logo">BoyZWear</div>
+          <p>Made for boys who play hard and dream big.</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="./catalog.html?cat=tees">Tees</a></li>
+            <li><a href="./catalog.html?cat=hoodies">Hoodies</a></li>
+            <li><a href="./catalog.html?cat=jeans">Jeans</a></li>
+            <li><a href="./catalog.html?cat=shoes">Shoes</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Help</h4>
+          <ul>
+            <li><a href="#">Shipping & Returns</a></li>
+            <li><a href="#">Size Guide</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <small>© <span id="year"></span> BoyZWear. Boys-only kids clothing.</small>
+      </div>
+    </footer>
+
+    <script src="./scripts/data.js" defer></script>
+    <script src="./scripts/cart.js" defer></script>
+    <script src="./scripts/home.js" defer></script>
+  </body>
+</html>
