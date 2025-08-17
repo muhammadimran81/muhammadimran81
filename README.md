@@ -1,6 +1,6 @@
 ## Hi, I'm muhammad imran
 
-Senior Software Engineer | Data Engineer  
+Senior Data Analyst | Software Engineer  
 
 Based in AL Khobar, Saudi Arabia  
 Currently working at Saudi Electricity Company 
