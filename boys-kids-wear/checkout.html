@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - BoyZWear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="/">BoyZWear</a>
+      </div>
+    </header>
+    <main class="section">
+      <div class="container" style="display:grid; grid-template-columns: 1fr 380px; gap: 16px; align-items: start;">
+        <section class="card">
+          <div class="card-body" style="display:grid; gap:12px;">
+            <h2 style="margin:0">Shipping</h2>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+              <input class="field" placeholder="First name" />
+              <input class="field" placeholder="Last name" />
+            </div>
+            <input class="field" placeholder="Address" />
+            <div style="display:grid; grid-template-columns: 2fr 1fr; gap:12px;">
+              <input class="field" placeholder="City" />
+              <input class="field" placeholder="ZIP" />
+            </div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+              <input class="field" placeholder="Email" />
+              <input class="field" placeholder="Phone" />
+            </div>
+
+            <h2 style="margin:12px 0 0">Payment</h2>
+            <div style="display:grid; gap:12px;">
+              <input class="field" placeholder="Card number" />
+              <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px;">
+                <input class="field" placeholder="MM/YY" />
+                <input class="field" placeholder="CVC" />
+              </div>
+            </div>
+
+            <button id="place-order" class="btn btn-primary" style="margin-top:12px; width:220px;">Place order</button>
+            <div id="order-status" class="card-sub" style="margin-top:8px;"></div>
+          </div>
+        </section>
+        <aside class="card">
+          <div class="card-body">
+            <div class="card-title">Order Summary</div>
+            <div id="summary" style="display:grid; gap:8px;"></div>
+            <div class="cart-footer" style="padding:0; border:0; margin-top:12px;">
+              <div class="row"><span>Subtotal</span><strong id="sum-sub">$0.00</strong></div>
+              <div class="row"><span>Shipping</span><strong id="sum-ship">$4.99</strong></div>
+              <div class="row"><span>Total</span><strong id="sum-total">$0.00</strong></div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </main>
+    <script src="./scripts/data.js"></script>
+    <script src="./scripts/cart.js"></script>
+    <script>
+      function formatPrice(n) { return `$${n.toFixed(2)}`; }
+      function renderSummary() {
+        const items = JSON.parse(localStorage.getItem('boyzwear_cart_v1') || '[]');
+        const container = document.getElementById('summary');
+        container.innerHTML = '';
+        let subtotal = 0;
+        items.forEach(item => {
+          const p = window.catalog.getProductById(item.id);
+          if (!p) return;
+          subtotal += p.price * item.qty;
+          const row = document.createElement('div');
+          row.style.display = 'grid';
+          row.style.gridTemplateColumns = '48px 1fr auto';
+          row.style.gap = '8px';
+          row.innerHTML = `
+            <img src="${p.image}" alt="${p.name}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;" />
+            <div>
+              <div style="font-weight:700">${p.name}</div>
+              <div class="card-sub">${item.qty} × ${formatPrice(p.price)}</div>
+            </div>
+            <div style="font-weight:800;">${formatPrice(p.price * item.qty)}</div>
+          `;
+          container.appendChild(row);
+        });
+        document.getElementById('sum-sub').textContent = formatPrice(subtotal);
+        const shipping = items.length ? 4.99 : 0;
+        document.getElementById('sum-ship').textContent = formatPrice(shipping);
+        document.getElementById('sum-total').textContent = formatPrice(subtotal + shipping);
+      }
+      document.addEventListener('DOMContentLoaded', () => {
+        renderSummary();
+        document.getElementById('place-order').addEventListener('click', () => {
+          document.getElementById('place-order').disabled = true;
+          document.getElementById('order-status').textContent = 'Processing...';
+          setTimeout(() => {
+            localStorage.removeItem('boyzwear_cart_v1');
+            document.getElementById('order-status').textContent = 'Order placed! Thank you.';
+          }, 1200);
+        });
+      });
+    </script>
+    <style>
+      .field { background: var(--card); color: var(--text); border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; width: 100%; }
+    </style>
+  </body>
+</html>

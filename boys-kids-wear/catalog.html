@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shop Boys Clothing - BoyZWear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles/main.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="/">BoyZWear</a>
+        <nav class="nav">
+          <a href="/">Home</a>
+          <a href="./catalog.html">Shop</a>
+        </nav>
+        <div class="actions">
+          <input id="site-search" type="search" placeholder="Search products..." />
+          <button id="cart-button" aria-label="Open cart">
+            <span class="icon">🛒</span>
+            <span id="cart-count" class="badge">0</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="section">
+      <div class="container" style="display:grid; grid-template-columns: 240px 1fr; gap: 16px; align-items: start;">
+        <aside class="card" style="position:sticky; top:84px;">
+          <div class="card-body">
+            <div class="card-title">Categories</div>
+            <ul style="list-style:none; padding:0; margin:0; display:grid; gap:8px;">
+              <li><a data-cat href="?">All</a></li>
+              <li><a data-cat="tees" href="?cat=tees">Tees</a></li>
+              <li><a data-cat="hoodies" href="?cat=hoodies">Hoodies</a></li>
+              <li><a data-cat="jeans" href="?cat=jeans">Jeans</a></li>
+              <li><a data-cat="shoes" href="?cat=shoes">Shoes</a></li>
+            </ul>
+          </div>
+        </aside>
+        <section>
+          <div class="section-head">
+            <h2 id="catalog-title" style="margin:0">All Boys Clothing</h2>
+          </div>
+          <div id="catalog-grid" class="product-grid"></div>
+        </section>
+      </div>
+    </main>
+
+    <aside id="cart" class="cart" aria-hidden="true" aria-labelledby="cart-title" role="dialog">
+      <div class="cart-backdrop" data-close></div>
+      <div class="cart-panel">
+        <header class="cart-header">
+          <h3 id="cart-title">Your Cart</h3>
+          <button class="icon-btn" data-close aria-label="Close cart">✕</button>
+        </header>
+        <div id="cart-items" class="cart-items"></div>
+        <footer class="cart-footer">
+          <div class="row">
+            <span>Subtotal</span>
+            <strong id="cart-subtotal">$0.00</strong>
+          </div>
+          <a class="btn btn-primary w-full" href="./checkout.html">Checkout</a>
+        </footer>
+      </div>
+    </aside>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <div class="logo">BoyZWear</div>
+          <p>Made for boys who play hard and dream big.</p>
+        </div>
+        <div>
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="./catalog.html?cat=tees">Tees</a></li>
+            <li><a href="./catalog.html?cat=hoodies">Hoodies</a></li>
+            <li><a href="./catalog.html?cat=jeans">Jeans</a></li>
+            <li><a href="./catalog.html?cat=shoes">Shoes</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="container footer-bottom">
+        <small>© <span id="year"></span> BoyZWear. Boys-only kids clothing.</small>
+      </div>
+    </footer>
+
+    <script src="./scripts/data.js" defer></script>
+    <script src="./scripts/cart.js" defer></script>
+    <script>
+      function makeProductCard(product) {
+        const hasSale = product.compareAt && product.compareAt > product.price;
+        const el = document.createElement('article');
+        el.className = 'card';
+        el.innerHTML = `
+          <div class="card-media">
+            ${hasSale ? '<div class="badge-sale">Sale</div>' : ''}
+            <img src="${product.image}" alt="${product.name}" style="width:100%; height:100%; object-fit:cover;" />
+          </div>
+          <div class="card-body">
+            <div class="card-title">${product.name}</div>
+            <div class="card-sub">${product.subtitle}</div>
+            <div class="price-row">
+              <div>
+                <span class="price">$${product.price.toFixed(2)}</span>
+                ${hasSale ? `<span class="card-sub" style="text-decoration:line-through; margin-left:8px">$${product.compareAt.toFixed(2)}</span>` : ''}
+              </div>
+              <button class="add-btn" data-id="${product.id}">Add</button>
+            </div>
+          </div>
+        `;
+        el.querySelector('.add-btn').addEventListener('click', () => window.cart.addToCart(product.id));
+        return el;
+      }
+      function renderCatalog() {
+        const params = new URLSearchParams(location.search);
+        const cat = params.get('cat');
+        const titleMap = { tees: 'Tees', hoodies: 'Hoodies', jeans: 'Jeans', shoes: 'Shoes' };
+        document.getElementById('catalog-title').textContent = cat ? `${titleMap[cat]} for Boys` : 'All Boys Clothing';
+        const products = window.catalog.getProductsByCategory(cat);
+        const grid = document.getElementById('catalog-grid');
+        grid.innerHTML = '';
+        products.forEach(p => grid.appendChild(makeProductCard(p)));
+        document.querySelectorAll('[data-cat]').forEach(a => {
+          const aCat = a.getAttribute('data-cat');
+          if ((aCat || '') === (cat || '')) a.style.color = 'var(--text)'; else a.style.color = 'var(--muted)';
+        })
+      }
+      document.addEventListener('DOMContentLoaded', renderCatalog);
+    </script>
+  </body>
+</html>
